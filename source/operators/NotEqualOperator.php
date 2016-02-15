@@ -40,6 +40,6 @@ class NotEqualOperator extends AbstractPHPPreBinaryOperator
 {
     public function getValue()
     {
-        return $this->left->getValue() != $this->right->getValue();
+        return $this->left->getValue() !== $this->right->getValue();
     }
 }
