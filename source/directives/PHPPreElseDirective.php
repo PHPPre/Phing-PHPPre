@@ -25,11 +25,12 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreConditionalDirective.php';
-require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
+require_once 'phing/tasks/ext/phppre/PHPPreDirectiveFactory.php';
+require_once 'phing/tasks/ext/phppre/lineactions/PHPPreDeleteLinesAction.php';
+require_once 'phing/tasks/ext/phppre/exceptions/PHPPreParserException.php';
 
 /**
- * Class IfDirective
+ * Class ElseDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -39,7 +40,7 @@ require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class IfDirective extends AbstractPHPPreConditionalDirective
+class ElseDirective extends AbstractPHPPreConditionalDirective
 {
 
     /**
@@ -49,31 +50,24 @@ class IfDirective extends AbstractPHPPreConditionalDirective
      */
     public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
-        $arguments = preg_split('/[\s]/', $this->argument);
-
-        $define = PhpPreTask::defineGet($arguments[0]);
-        $leftOperator = PHPPreOperatorFactory::createValueOperator($define);
-        $rightOperator = PHPPreOperatorFactory::createValueOperator($arguments[2]);
-
-        try {
-            $operator = PHPPreOperatorFactory::createBinaryOperator($arguments[1], $leftOperator, $rightOperator);
-        } catch (Exception $ex) {
-            throw new PHPPreParserException($ex->getMessage(), $this->getFileLine());
+        if ($stack->top() instanceof ElseDirective) {
+            throw new PHPPreParserException("This is second else tag in a row.", $this->getFileLine());
         }
 
-        $this->condition = $operator->getValue();
-        $stack->push($this);
-    }
+        if ($stack->top() instanceof AbstractPHPPreConditionalDirective) {
+            $conditionalTag = $stack->pop();
+            $stack->push($this);
+            $this->condition = false;
 
-    /**
-     * @return bool
-     * @throws PHPPreParserException
-     */
-    public function validate()
-    {
-        if (!preg_match('/^[a-zA-Z0-9_.=><!\s]+$/', $this->argument)) {
-            throw new PHPPreParserException('if argument: ' . $this->argument, $this->getFileLine());
+            if (!$conditionalTag->getCondition()) {
+                $this->condition = true;
+                $action = new PHPPreDeleteLinesAction();
+                $action->setStartLine($conditionalTag->getFileLine());
+                $action->setEndLine($this->getFileLine());
+                $actionSet->addAction($action);
+            }
+        } else {
+            throw new PHPPreParserException("No opening tag found for else", $this->getFileLine());
         }
-        return true;
     }
 }

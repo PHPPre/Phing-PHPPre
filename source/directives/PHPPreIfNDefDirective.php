@@ -25,10 +25,11 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreMessageDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreConditionalDirective.php';
+require_once 'phing/tasks/ext/phppre/exceptions/PHPPreParserException.php';
 
 /**
- * Class MessageInfoDirective
+ * Class IfNDefDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -38,14 +39,28 @@ require_once 'phing/tasks/ext/phppre/AbstractPHPPreMessageDirective.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class MessageInfoDirective extends AbstractPHPPreMessageDirective
+class IfNDefDirective extends AbstractPHPPreConditionalDirective
 {
 
     /**
+     * @param PHPPreStack $stack
      * @param PHPPreActionSet $actionSet
      */
-    protected function showMessage(PHPPreActionSet &$actionSet)
+    public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
-        PHPPreTask::logger($this->argument, Project::MSG_INFO);
+        $this->condition = !(PhpPreTask::defineGet($this->argument) !== null ? true : false);
+        $stack->push($this);
+    }
+
+    /**
+     * @return bool
+     * @throws PHPPreParserException
+     */
+    public function validate()
+    {
+        if (!preg_match('/^[a-zA-Z0-9_.]+$/', $this->argument)) {
+            throw new PHPPreParserException('ifndef argument: ' . $this->argument, $this->fileLine);
+        }
+        return true;
     }
 }

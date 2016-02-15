@@ -25,11 +25,10 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreConditionalDirective.php';
-require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreDirective.php';
 
 /**
- * Class IfNDefDirective
+ * Abstract Class AbstractPHPPreConditionalDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -39,28 +38,15 @@ require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class IfNDefDirective extends AbstractPHPPreConditionalDirective
+abstract class AbstractPHPPreConditionalDirective extends AbstractPHPPreDirective
 {
+    protected $condition;
 
-    /**
-     * @param PHPPreStack $stack
-     * @param PHPPreActionSet $actionSet
-     */
-    public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
+    public function getCondition()
     {
-        $this->condition = !(PhpPreTask::defineGet($this->argument) !== null ? true : false);
-        $stack->push($this);
-    }
-
-    /**
-     * @return bool
-     * @throws PHPPreParserException
-     */
-    public function validate()
-    {
-        if (!preg_match('/^[a-zA-Z0-9_.]+$/', $this->argument)) {
-            throw new PHPPreParserException('ifndef argument: ' . $this->argument, $this->fileLine);
+        if (!isset($this->condition)) {
+            throw new PHPPreParserException("Getting condition before it was set", $this->getFileLine());
         }
-        return true;
+        return $this->condition;
     }
 }

@@ -25,11 +25,12 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreConditionalDirective.php';
-require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreConditionalDirective.php';
+require_once 'phing/tasks/ext/phppre/PHPPreOperatorFactory.php';
+require_once 'phing/tasks/ext/phppre/exceptions/PHPPreParserException.php';
 
 /**
- * Class EndIfDirective
+ * Class IfDefDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -39,28 +40,28 @@ require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class EndIfDirective extends AbstractPHPPreDirective
+class IfDefDirective extends AbstractPHPPreConditionalDirective
 {
 
     /**
      * @param PHPPreStack $stack
      * @param PHPPreActionSet $actionSet
-     * @throws PHPPreParserException
      */
     public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
-        if ($stack->top() instanceof AbstractPHPPreConditionalDirective) {
-            $conditionalTag = $stack->pop();
+        $this->condition = PhpPreTask::defineGet($this->argument) !== null;
+        $stack->push($this);
+    }
 
-            if (!$conditionalTag->getCondition()) {
-                $action = new PHPPreDeleteLinesAction();
-                $action->setStartLine($conditionalTag->getFileLine());
-                $action->setEndLine($this->getFileLine());
-
-                $actionSet->addAction($action);
-            }
-        } else {
-            throw new PHPPreParserException("No opening tag found for endif", $this->getFileLine());
+    /**
+     * @return bool
+     * @throws PHPPreParserException
+     */
+    public function validate()
+    {
+        if (!preg_match('/^[a-zA-Z0-9_.]+$/', $this->argument)) {
+            throw new PHPPreParserException('ifdef argument: ' . $this->argument, $this->getFileLine());
         }
+        return true;
     }
 }

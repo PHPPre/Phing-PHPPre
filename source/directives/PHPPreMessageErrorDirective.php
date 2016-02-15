@@ -25,10 +25,10 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreMessageDirective.php';
 
 /**
- * Abstract Class AbstractPHPPreConditionalDirective
+ * Class MessageErrorDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -38,15 +38,15 @@ require_once 'phing/tasks/ext/phppre/AbstractPHPPreDirective.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-abstract class AbstractPHPPreConditionalDirective extends AbstractPHPPreDirective
+class MessageErrorDirective extends AbstractPHPPreMessageDirective
 {
-    protected $condition;
 
-    public function getCondition()
+    /**
+     * @param PHPPreActionSet $actionSet
+     * @throws Exception
+     */
+    protected function showMessage(PHPPreActionSet &$actionSet)
     {
-        if (!isset($this->condition)) {
-            throw new PHPPreParserException("Getting condition before it was set", $this->getFileLine());
-        }
-        return $this->condition;
+        throw new Exception('Error: ' . $this->argument);
     }
 }

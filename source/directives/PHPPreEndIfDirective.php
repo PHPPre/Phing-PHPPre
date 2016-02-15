@@ -25,10 +25,11 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/InterfacePHPPreOperator.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreConditionalDirective.php';
+require_once 'phing/tasks/ext/phppre/exceptions/PHPPreParserException.php';
 
 /**
- * Abstract Class AbstractPHPPreBinaryOperator
+ * Class EndIfDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -38,20 +39,28 @@ require_once 'phing/tasks/ext/phppre/InterfacePHPPreOperator.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-abstract class AbstractPHPPreBinaryOperator implements InterfacePHPPreOperator
+class EndIfDirective extends AbstractPHPPreDirective
 {
-    protected $left;
-    protected $right;
 
     /**
-     * AbstractPHPPreBinaryOperator constructor.
-     *
-     * @param InterfacePHPPreOperator $left
-     * @param InterfacePHPPreOperator $right
+     * @param PHPPreStack $stack
+     * @param PHPPreActionSet $actionSet
+     * @throws PHPPreParserException
      */
-    public function __construct(InterfacePHPPreOperator &$left, InterfacePHPPreOperator &$right)
+    public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
-        $this->left = $left;
-        $this->right = $right;
+        if ($stack->top() instanceof AbstractPHPPreConditionalDirective) {
+            $conditionalTag = $stack->pop();
+
+            if (!$conditionalTag->getCondition()) {
+                $action = new PHPPreDeleteLinesAction();
+                $action->setStartLine($conditionalTag->getFileLine());
+                $action->setEndLine($this->getFileLine());
+
+                $actionSet->addAction($action);
+            }
+        } else {
+            throw new PHPPreParserException("No opening tag found for endif", $this->getFileLine());
+        }
     }
 }

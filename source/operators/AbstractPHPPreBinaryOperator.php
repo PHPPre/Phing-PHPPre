@@ -25,10 +25,10 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreMessageDirective.php';
+require_once 'phing/tasks/ext/phppre/operators/InterfacePHPPreOperator.php';
 
 /**
- * Class MessageErrorDirective
+ * Abstract Class AbstractPHPPreBinaryOperator
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -38,15 +38,20 @@ require_once 'phing/tasks/ext/phppre/AbstractPHPPreMessageDirective.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class MessageErrorDirective extends AbstractPHPPreMessageDirective
+abstract class AbstractPHPPreBinaryOperator implements InterfacePHPPreOperator
 {
+    protected $left;
+    protected $right;
 
     /**
-     * @param PHPPreActionSet $actionSet
-     * @throws Exception
+     * AbstractPHPPreBinaryOperator constructor.
+     *
+     * @param InterfacePHPPreOperator $left
+     * @param InterfacePHPPreOperator $right
      */
-    protected function showMessage(PHPPreActionSet &$actionSet)
+    public function __construct(InterfacePHPPreOperator &$left, InterfacePHPPreOperator &$right)
     {
-        throw new Exception('Error: ' . $this->argument);
+        $this->left = $left;
+        $this->right = $right;
     }
 }

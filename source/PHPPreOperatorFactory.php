@@ -25,15 +25,14 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreBinaryOperator.php';
-require_once 'phing/tasks/ext/phppre/PHPPreValueOperator.php';
-
-require_once 'phing/tasks/ext/phppre/operators/EqualOperator.php';
-require_once 'phing/tasks/ext/phppre/operators/GreaterThanEqualOperator.php';
-require_once 'phing/tasks/ext/phppre/operators/GreaterThanOperator.php';
-require_once 'phing/tasks/ext/phppre/operators/LessThanEqualOperator.php';
-require_once 'phing/tasks/ext/phppre/operators/LessThanOperator.php';
-require_once 'phing/tasks/ext/phppre/operators/NotEqualOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/AbstractPHPPreBinaryOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/PHPPreEqualOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/PHPPreGreaterThanEqualOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/PHPPreGreaterThanOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/PHPPreLessThanEqualOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/PHPPreLessThanOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/PHPPreNotEqualOperator.php';
+require_once 'phing/tasks/ext/phppre/operators/PHPPreValueOperator.php';
 
 /**
  * Class PHPPreOperatorFactory

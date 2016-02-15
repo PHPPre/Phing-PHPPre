@@ -25,10 +25,10 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreLinesAction.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreMessageDirective.php';
 
 /**
- * Class PHPPreDeleteLinesAction
+ * Class MessageWarningDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -38,35 +38,14 @@ require_once 'phing/tasks/ext/phppre/AbstractPHPPreLinesAction.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class PHPPreDeleteLinesAction extends AbstractPHPPreLinesAction
+class MessageWarningDirective extends AbstractPHPPreMessageDirective
 {
 
     /**
-     * @param array $fileLines
-     * @param $outputMode
-     * @throws Exception
+     * @param PHPPreActionSet $actionSet
      */
-    public function execute(&$fileLines, &$outputMode)
+    protected function showMessage(PHPPreActionSet &$actionSet)
     {
-        for ($i = $this->startLine; $i <= $this->endLine; $i++) {
-            // function array_key_exist is very slow in php version 5.x, therefore we use combination of isset and is_null
-            if (isset($fileLines[$i]) || is_null($fileLines[$i]) || array_key_exists($i, $fileLines)) {
-                switch ($outputMode) {
-                    case PHPPreTask::OUTPUT_MODE_REMOVE:
-                        unset($fileLines[$i]);
-                        break;
-                    case PHPPreTask::OUTPUT_MODE_CLEAR:
-                        $fileLines[$i] = '';
-                        break;
-                    case PHPPreTask::OUTPUT_MODE_COMMENT:
-                        if (substr($fileLines[$i], 0, 3) !== "// ") {
-                            $fileLines[$i] = '// '.$fileLines[$i];
-                        }
-                        break;
-                    default:
-                        throw new Exception("Internal error, unsupported output mode");
-                }
-            }
-        }
+        PHPPreTask::logger($this->argument, Project::MSG_WARN);
     }
 }

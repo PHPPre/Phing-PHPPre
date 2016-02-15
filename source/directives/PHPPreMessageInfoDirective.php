@@ -25,12 +25,10 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/PHPPreDirectiveFactory.php';
-require_once 'phing/tasks/ext/phppre/lineaction/PHPPreDeleteLinesAction.php';
-require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreMessageDirective.php';
 
 /**
- * Class ElseDirective
+ * Class MessageInfoDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -40,34 +38,14 @@ require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class ElseDirective extends AbstractPHPPreConditionalDirective
+class MessageInfoDirective extends AbstractPHPPreMessageDirective
 {
 
     /**
-     * @param PHPPreStack $stack
      * @param PHPPreActionSet $actionSet
-     * @throws PHPPreParserException
      */
-    public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
+    protected function showMessage(PHPPreActionSet &$actionSet)
     {
-        if ($stack->top() instanceof ElseDirective) {
-            throw new PHPPreParserException("This is second else tag in a row.", $this->getFileLine());
-        }
-
-        if ($stack->top() instanceof AbstractPHPPreConditionalDirective) {
-            $conditionalTag = $stack->pop();
-            $stack->push($this);
-            $this->condition = false;
-
-            if (!$conditionalTag->getCondition()) {
-                $this->condition = true;
-                $action = new PHPPreDeleteLinesAction();
-                $action->setStartLine($conditionalTag->getFileLine());
-                $action->setEndLine($this->getFileLine());
-                $actionSet->addAction($action);
-            }
-        } else {
-            throw new PHPPreParserException("No opening tag found for else", $this->getFileLine());
-        }
+        PHPPreTask::logger($this->argument, Project::MSG_INFO);
     }
 }

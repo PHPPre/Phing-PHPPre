@@ -25,12 +25,10 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreConditionalDirective.php';
-require_once 'phing/tasks/ext/phppre/PHPPreOperatorFactory.php';
-require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
+require_once 'phing/tasks/ext/phppre/lineactions/AbstractPHPPreLinesAction.php';
 
 /**
- * Class IfDefDirective
+ * Class PHPPreDeleteLinesAction
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -40,28 +38,35 @@ require_once 'phing/tasks/ext/phppre/PHPPreParserException.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class IfDefDirective extends AbstractPHPPreConditionalDirective
+class PHPPreDeleteLinesAction extends AbstractPHPPreLinesAction
 {
 
     /**
-     * @param PHPPreStack $stack
-     * @param PHPPreActionSet $actionSet
+     * @param array $fileLines
+     * @param $outputMode
+     * @throws Exception
      */
-    public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
+    public function execute(&$fileLines, &$outputMode)
     {
-        $this->condition = PhpPreTask::defineGet($this->argument) !== null;
-        $stack->push($this);
-    }
-
-    /**
-     * @return bool
-     * @throws PHPPreParserException
-     */
-    public function validate()
-    {
-        if (!preg_match('/^[a-zA-Z0-9_.]+$/', $this->argument)) {
-            throw new PHPPreParserException('ifdef argument: ' . $this->argument, $this->getFileLine());
+        for ($i = $this->startLine; $i <= $this->endLine; $i++) {
+            // function array_key_exist is very slow in php version 5.x, therefore we use combination of isset and is_null
+            if (isset($fileLines[$i]) || is_null($fileLines[$i]) || array_key_exists($i, $fileLines)) {
+                switch ($outputMode) {
+                    case PHPPreTask::OUTPUT_MODE_REMOVE:
+                        unset($fileLines[$i]);
+                        break;
+                    case PHPPreTask::OUTPUT_MODE_CLEAR:
+                        $fileLines[$i] = '';
+                        break;
+                    case PHPPreTask::OUTPUT_MODE_COMMENT:
+                        if (substr($fileLines[$i], 0, 3) !== "// ") {
+                            $fileLines[$i] = '// '.$fileLines[$i];
+                        }
+                        break;
+                    default:
+                        throw new Exception("Internal error, unsupported output mode");
+                }
+            }
         }
-        return true;
     }
 }

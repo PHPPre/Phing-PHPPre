@@ -25,10 +25,11 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/AbstractPHPPreMessageDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/AbstractPHPPreConditionalDirective.php';
+require_once 'phing/tasks/ext/phppre/exceptions/PHPPreParserException.php';
 
 /**
- * Class MessageWarningDirective
+ * Class IfDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -38,14 +39,41 @@ require_once 'phing/tasks/ext/phppre/AbstractPHPPreMessageDirective.php';
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class MessageWarningDirective extends AbstractPHPPreMessageDirective
+class IfDirective extends AbstractPHPPreConditionalDirective
 {
 
     /**
+     * @param PHPPreStack $stack
      * @param PHPPreActionSet $actionSet
+     * @throws PHPPreParserException
      */
-    protected function showMessage(PHPPreActionSet &$actionSet)
+    public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
-        PHPPreTask::logger($this->argument, Project::MSG_WARN);
+        $arguments = preg_split('/[\s]/', $this->argument);
+
+        $define = PhpPreTask::defineGet($arguments[0]);
+        $leftOperator = PHPPreOperatorFactory::createValueOperator($define);
+        $rightOperator = PHPPreOperatorFactory::createValueOperator($arguments[2]);
+
+        try {
+            $operator = PHPPreOperatorFactory::createBinaryOperator($arguments[1], $leftOperator, $rightOperator);
+        } catch (Exception $ex) {
+            throw new PHPPreParserException($ex->getMessage(), $this->getFileLine());
+        }
+
+        $this->condition = $operator->getValue();
+        $stack->push($this);
+    }
+
+    /**
+     * @return bool
+     * @throws PHPPreParserException
+     */
+    public function validate()
+    {
+        if (!preg_match('/^[a-zA-Z0-9_.=><!\s]+$/', $this->argument)) {
+            throw new PHPPreParserException('if argument: ' . $this->argument, $this->getFileLine());
+        }
+        return true;
     }
 }

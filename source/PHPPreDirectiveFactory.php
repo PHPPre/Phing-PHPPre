@@ -25,15 +25,15 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
-require_once 'phing/tasks/ext/phppre/directives/IfDirective.php';
-require_once 'phing/tasks/ext/phppre/directives/IfDefDirective.php';
-require_once 'phing/tasks/ext/phppre/directives/IfNDefDirective.php';
-require_once 'phing/tasks/ext/phppre/directives/EndIfDirective.php';
-require_once 'phing/tasks/ext/phppre/directives/ElseDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreIfDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreIfDefDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreIfNDefDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreEndIfDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreElseDirective.php';
 
-require_once 'phing/tasks/ext/phppre/directives/MessageErrorDirective.php';
-require_once 'phing/tasks/ext/phppre/directives/MessageInfoDirective.php';
-require_once 'phing/tasks/ext/phppre/directives/MessageWarningDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreMessageErrorDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreMessageInfoDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreMessageWarningDirective.php';
 
 /**
  * Class PHPPreDirectiveFactory
