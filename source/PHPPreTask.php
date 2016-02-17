@@ -45,34 +45,60 @@ require_once 'phing/tasks/ext/phppre/PHPPreLineSeparatorAttributeTranslator.php'
 class PHPPreTask extends Task
 {
 
+
+    /**
+     * It's reference to itself
+     *
+     * @var PHPPreTask
+     */
     public static $reference;
 
     /**
-     * from xml attribute
+     * XML attribute <i>outputMode</i>
      *
      * @var string
      */
     protected $outputMode;
 
     /**
-     * from xml attribute
+     * XML attribute <i>lineSeparator</i>
      *
      * @var string|null
      */
     protected $lineSeparator;
 
     /**
+     * File set array
+     *
      * @var array
      */
-    protected $filesets = [];
+    protected $fileSets = [];
 
-
-    const OUTPUT_MODE_REMOVE = "REMOVE";
-    const OUTPUT_MODE_COMMENT = "COMMENT";
-    const OUTPUT_MODE_CLEAR = "CLEAR";
 
     /**
-     * XML attribute output Mode setter
+     *  Output mode constant
+     *
+     *  @todo: Temporarily here
+     */
+    const OUTPUT_MODE_REMOVE  = "REMOVE";
+
+    /**
+     *  Output mode constant
+     *
+     *  @todo: Temporarily here
+     */
+    const OUTPUT_MODE_COMMENT = "COMMENT";
+
+    /**
+     *  Output mode constant
+     *
+     *  @todo: Temporarily here
+     */
+    const OUTPUT_MODE_CLEAR   = "CLEAR";
+
+
+    /**
+     * XML attribute <i>outputMode</i> setter
      *
      * @param string|null $outputMode
      */
@@ -82,7 +108,7 @@ class PHPPreTask extends Task
     }
 
     /**
-     * XML attribute Line Separator setter
+     * XML attribute <i>lineSeparator</i> setter
      *
      * @param string|null $lineSeparator
      */
@@ -93,8 +119,10 @@ class PHPPreTask extends Task
     }
 
     /**
-     * @param $message
-     * @param integer $messageType
+     * Simplifies <i>PHING</i> logger access
+     *
+     * @param string $message message to log
+     * @param integer $messageType log level, defaults to Project::MSG_INFO
      */
     public static function logger($message, $messageType = Project::MSG_INFO)
     {
@@ -104,8 +132,10 @@ class PHPPreTask extends Task
     }
 
     /**
-     * @param $name
-     * @return mixed
+     * Gets property from <i>PHING</i> project
+     *
+     * @param string $name property name
+     * @return mixed property value
      */
     public static function defineGet($name)
     {
@@ -113,8 +143,10 @@ class PHPPreTask extends Task
     }
 
     /**
-     * @param $name
-     * @param $value
+     * Sets property to <i>PHING</i> project
+     *
+     * @param string $name property name
+     * @param mixed $value property value
      */
     public static function defineSet($name, $value)
     {
@@ -122,15 +154,19 @@ class PHPPreTask extends Task
     }
 
     /**
+     * Adds file set for processing
+     *
      * @param FileSet $fs
      */
     public function addFileSet(FileSet $fs)
     {
-        $this->filesets[] = $fs;
+        $this->fileSets[] = $fs;
     }
 
 
     /**
+     * Executes PHPPreTask
+     *
      * @throws Exception
      */
     public function main()
@@ -138,7 +174,7 @@ class PHPPreTask extends Task
 
         self::$reference = &$this;
 
-        foreach ($this->filesets as $fs) {
+        foreach ($this->fileSets as $fs) {
             $ds = $fs->getDirectoryScanner($this->getProject());
             $fromDir = $fs->getDir($this->getProject());
             $srcFiles = $ds->getIncludedFiles();

@@ -59,15 +59,19 @@ class PHPPreStack
     }
 
     /**
-     * @return int
+     * Returns top element's index in stack.
+     *
+     * @return integer top element index
      */
-    public function getTopIndex()
+    protected function getTopIndex()
     {
         return count($this->stack) - 1;
     }
 
     /**
-     * @return mixed
+     * Gets element from top of the stack.
+     *
+     * @return mixed top element
      */
     public function top()
     {
@@ -78,22 +82,26 @@ class PHPPreStack
     }
 
     /**
-     * @return mixed
-     * @throws Exception
+     * Gets element and removes it from top of the stack.
+     *
+     * @return mixed top element
+     * @throws Exception when stack is empty
      */
     public function pop()
     {
         if ($this->getTopIndex() == -1) {
-            throw new \Exception("Stack is empty!");
+            throw new Exception("Stack is empty!");
         }
         return array_pop($this->stack);
     }
 
     /**
-     * @param $object
+     * Adds element to top of the stack.
+     *
+     * @param $element element to add
      */
-    public function push(&$object)
+    public function push(&$element)
     {
-        array_push($this->stack, $object);
+        array_push($this->stack, $element);
     }
 }

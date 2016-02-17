@@ -46,12 +46,12 @@ class PHPPreLineSeparatorAttributeTranslator
     /**
      * Linux line separator LF
      */
-    const LINE_SEPARATOR_LINUX = "LF";
+    const LINE_SEPARATOR_UNIX = "LF";
 
     /**
      * MAC OS line separator CR
      */
-    const LINE_SEPARATOR_MACOS = "CR";
+    const LINE_SEPARATOR_MAC = "CR";
 
     /**
      * Translating constant value to special characters
@@ -65,10 +65,10 @@ class PHPPreLineSeparatorAttributeTranslator
         switch ($lineSeparatorAttribute) {
             case PHPPreLineSeparatorAttributeTranslator::LINE_SEPARATOR_WINDOWS:
                 return PHPPreFileSaver::LINE_SEPARATOR_WINDOWS;
-            case PHPPreLineSeparatorAttributeTranslator::LINE_SEPARATOR_LINUX:
-                return PHPPreFileSaver::LINE_SEPARATOR_LINUX;
-            case PHPPreLineSeparatorAttributeTranslator::LINE_SEPARATOR_MACOS:
-                return PHPPreFileSaver::LINE_SEPARATOR_MACOS;
+            case PHPPreLineSeparatorAttributeTranslator::LINE_SEPARATOR_UNIX:
+                return PHPPreFileSaver::LINE_SEPARATOR_UNIX;
+            case PHPPreLineSeparatorAttributeTranslator::LINE_SEPARATOR_MAC:
+                return PHPPreFileSaver::LINE_SEPARATOR_MAC;
             default:
                 throw new Exception("Unknown line separator attribute: " . $lineSeparatorAttribute);
         }

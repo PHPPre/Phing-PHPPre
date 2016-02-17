@@ -48,7 +48,7 @@ class IfNDefDirective extends AbstractPHPPreConditionalDirective
      */
     public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
-        $this->condition = !(PhpPreTask::defineGet($this->argument) !== null ? true : false);
+        $this->condition = PhpPreTask::defineGet($this->argument) === null;
         $stack->push($this);
     }
 

@@ -43,6 +43,7 @@ class PHPPreParserException extends Exception
 
     /**
      * PHPPreParserException constructor.
+     *
      * @param string $message
      * @param int $sourceLine
      */

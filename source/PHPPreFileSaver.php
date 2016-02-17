@@ -46,12 +46,12 @@ class PHPPreFileSaver
     /**
      * Linux line separator LF
      */
-    const LINE_SEPARATOR_LINUX   = "\n";
+    const LINE_SEPARATOR_UNIX   = "\n";
 
     /**
      * MAC OS line separator CR
      */
-    const LINE_SEPARATOR_MACOS   = "\r";
+    const LINE_SEPARATOR_MAC   = "\r";
 
     /**
      * File saved will use it as line separator.
@@ -65,7 +65,7 @@ class PHPPreFileSaver
      *
      * @param string $lineSeparator line separator
      */
-    public function __construct($lineSeparator = PHPPreFileSaver::LINE_SEPARATOR_LINUX)
+    public function __construct($lineSeparator = PHPPreFileSaver::LINE_SEPARATOR_UNIX)
     {
         $this->lineSeparator = $lineSeparator;
     }

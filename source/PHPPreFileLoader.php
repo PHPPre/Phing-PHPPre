@@ -46,7 +46,7 @@ class PHPPreFileLoader
     const REGEXP_SPLIT_CR = '/\r/';
 
     /**
-     * FileLoader constructor.
+     * FileLoader constructor. Autodetect file line separator
      * @param string $fileName
      * @throws Exception
      */

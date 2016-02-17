@@ -54,7 +54,9 @@ class PHPPreActionSet
         $this->outputMode = $outputMode;
     }
 
-
+    /**
+     * @param AbstractPHPPreLinesAction $action
+     */
     public function addAction(AbstractPHPPreLinesAction &$action)
     {
         $this->array[] = $action;

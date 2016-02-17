@@ -82,8 +82,8 @@ abstract class AbstractPHPPreLinesAction
     }
 
     /**
-     * @param array $fileLines Referemce
-     * @param $outputMode
+     * @param array $fileLines Reference
+     * @param string $outputMode
      */
     abstract public function execute(&$fileLines, &$outputMode);
 }
