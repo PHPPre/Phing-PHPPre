@@ -45,7 +45,7 @@ abstract class AbstractPHPPreConditionalDirective extends AbstractPHPPreDirectiv
     public function getCondition()
     {
         if (!isset($this->condition)) {
-            throw new PHPPreParserException("Getting condition before it was set", $this->getFileLine());
+            throw new PHPPreParserException('Getting condition before it was set', $this->getFileLine());
         }
         return $this->condition;
     }

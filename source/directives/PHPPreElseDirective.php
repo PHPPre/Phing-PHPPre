@@ -51,7 +51,7 @@ class ElseDirective extends AbstractPHPPreConditionalDirective
     public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
         if ($stack->top() instanceof ElseDirective) {
-            throw new PHPPreParserException("This is second else tag in a row.", $this->getFileLine());
+            throw new PHPPreParserException('This is second else tag in a row', $this->getFileLine());
         }
 
         if ($stack->top() instanceof AbstractPHPPreConditionalDirective) {
@@ -67,7 +67,7 @@ class ElseDirective extends AbstractPHPPreConditionalDirective
                 $actionSet->addAction($action);
             }
         } else {
-            throw new PHPPreParserException("No opening tag found for else", $this->getFileLine());
+            throw new PHPPreParserException('No opening tag found for else', $this->getFileLine());
         }
     }
 }

@@ -90,7 +90,7 @@ class PHPPreStack
     public function pop()
     {
         if ($this->getTopIndex() == -1) {
-            throw new Exception("Stack is empty!");
+            throw new Exception('Stack is empty!');
         }
         return array_pop($this->stack);
     }

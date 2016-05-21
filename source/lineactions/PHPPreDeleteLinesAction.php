@@ -59,12 +59,12 @@ class PHPPreDeleteLinesAction extends AbstractPHPPreLinesAction
                         $fileLines[$i] = '';
                         break;
                     case PHPPreTask::OUTPUT_MODE_COMMENT:
-                        if (substr($fileLines[$i], 0, 3) !== "// ") {
+                        if (substr($fileLines[$i], 0, 3) !== '// ') {
                             $fileLines[$i] = '// '.$fileLines[$i];
                         }
                         break;
                     default:
-                        throw new Exception("Internal error, unsupported output mode");
+                        throw new Exception('Internal error, unsupported output mode');
                 }
             }
         }
