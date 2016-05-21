@@ -80,21 +80,21 @@ class PHPPreTask extends Task
      *
      *  @todo: Temporarily here
      */
-    const OUTPUT_MODE_REMOVE  = "REMOVE";
+    const OUTPUT_MODE_REMOVE  = 'REMOVE';
 
     /**
      *  Output mode constant
      *
      *  @todo: Temporarily here
      */
-    const OUTPUT_MODE_COMMENT = "COMMENT";
+    const OUTPUT_MODE_COMMENT = 'COMMENT';
 
     /**
      *  Output mode constant
      *
      *  @todo: Temporarily here
      */
-    const OUTPUT_MODE_CLEAR   = "CLEAR";
+    const OUTPUT_MODE_CLEAR   = 'CLEAR';
 
 
     /**
@@ -188,7 +188,7 @@ class PHPPreTask extends Task
                     $parser->setOutputMode($this->outputMode);
                 }
                 try {
-                    $this->logger(" * Preprocessing file: " . $srcDirs.DIRECTORY_SEPARATOR.$srcFile, Project::MSG_VERBOSE);
+                    $this->logger(' * Preprocessing file: ' . $srcDirs.DIRECTORY_SEPARATOR.$srcFile, Project::MSG_VERBOSE);
                     $definitions = [];
                     $parsedFileLines = $parser->parse($definitions);
 

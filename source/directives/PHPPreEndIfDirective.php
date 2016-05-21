@@ -60,7 +60,7 @@ class EndIfDirective extends AbstractPHPPreDirective
                 $actionSet->addAction($action);
             }
         } else {
-            throw new PHPPreParserException("No opening tag found for endif", $this->getFileLine());
+            throw new PHPPreParserException('No opening tag found for endif', $this->getFileLine());
         }
     }
 }

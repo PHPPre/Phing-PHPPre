@@ -102,7 +102,7 @@ class PHPPreOperatorFactory
             case '==':
                 return new EqualOperator($left, $right);
             default:
-                throw new Exception("Unknown operator expression: " . $operator);
+                throw new Exception('Unknown operator expression: ' . $operator);
         }
     }
 }

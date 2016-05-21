@@ -73,40 +73,40 @@ class PHPPreDirectiveFactory
     public function createTag($tag, $argument, $line, &$definitions)
     {
         switch ($tag) {
-            case "if":
+            case 'if':
                 $tag = new IfDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
-            case "ifdef":
+            case 'ifdef':
                 $tag = new IfDefDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
-            case "ifndef":
+            case 'ifndef':
                 $tag = new IfNDefDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
-            case "endif":
+            case 'endif':
                 $tag = new EndIfDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
-            case "else":
+            case 'else':
                 $tag = new ElseDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
-            case "error":
+            case 'error':
                 $tag = new MessageErrorDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
-            case "message":
+            case 'message':
                 $tag = new MessageInfoDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
-            case "warning":
+            case 'warning':
                 $tag = new MessageWarningDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
             default:
-                throw new PHPPreParserException("Unknown tag: " . $tag, $line);
+                throw new PHPPreParserException('Unknown tag: ' . $tag, $line);
         }
     }
 }

@@ -41,17 +41,17 @@ class PHPPreLineSeparatorAttributeTranslator
     /**
      * Windows line separator CRLF
      */
-    const LINE_SEPARATOR_WINDOWS = "CRLF";
+    const LINE_SEPARATOR_WINDOWS = 'CRL';
 
     /**
      * Linux line separator LF
      */
-    const LINE_SEPARATOR_UNIX = "LF";
+    const LINE_SEPARATOR_UNIX = 'LF';
 
     /**
      * MAC OS line separator CR
      */
-    const LINE_SEPARATOR_MAC = "CR";
+    const LINE_SEPARATOR_MAC = 'CR';
 
     /**
      * Translating constant value to special characters
@@ -70,7 +70,7 @@ class PHPPreLineSeparatorAttributeTranslator
             case PHPPreLineSeparatorAttributeTranslator::LINE_SEPARATOR_MAC:
                 return PHPPreFileSaver::LINE_SEPARATOR_MAC;
             default:
-                throw new Exception("Unknown line separator attribute: " . $lineSeparatorAttribute);
+                throw new Exception('Unknown line separator attribute: ' . $lineSeparatorAttribute);
         }
     }
 }

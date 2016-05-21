@@ -66,7 +66,7 @@ class PHPPreParser
         if (!in_array($outputMode, [PHPPreTask::OUTPUT_MODE_REMOVE,
                                     PHPPreTask::OUTPUT_MODE_COMMENT,
                                     PHPPreTask::OUTPUT_MODE_CLEAR])) {
-            throw new Exception("Invalid outputMode value");
+            throw new Exception('Invalid outputMode value');
         }
         $this->outputMode = $outputMode;
     }
