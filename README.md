@@ -46,10 +46,10 @@ Future releases:
 </target>
 ```
 
-##Documentation
+## Documentation
 
 Available at github repository wiki.
 
-##Licensing
+## Licensing
 
 This software is licensed under GNU LGPL v3. You may find the terms in the "LICENSE" file in this directory.
