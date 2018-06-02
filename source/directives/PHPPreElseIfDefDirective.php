@@ -25,8 +25,12 @@
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
 
+require_once 'phing/tasks/ext/phppre/PHPPreDirectiveFactory.php';
+require_once 'phing/tasks/ext/phppre/lineactions/PHPPreDeleteLinesAction.php';
+require_once 'phing/tasks/ext/phppre/exceptions/PHPPreParserException.php';
+
 /**
- * Class PHPPreStack
+ * Class ElseIfDefDirective
  *
  * @author     Maciej Trynkowski <maciej.trynkowski@miltar.pl>
  * @author     Wojciech Trynkowski <wojciech.trynkowski@miltar.pl>
@@ -36,72 +40,30 @@
  * @subpackage phppre
  * @link       https://github.com/PHPPre/Phing-PHPPre
  */
-class PHPPreStack
+class ElseIfDefDirective extends AbstractPHPPreConditionalDirective
 {
-    private $stack;
 
     /**
-     * Stack constructor.
+     * @param PHPPreStack $stack
+     * @param PHPPreActionSet $actionSet
+     * @throws PHPPreParserException
      */
-    public function __construct()
+    public function handleInternal(PHPPreStack &$stack, PHPPreActionSet &$actionSet)
     {
-        $this->stack = [];
-    }
-
-    /**
-     * Stack destructor
-     */
-    public function __destruct()
-    {
-        if (isset($this->stack)) {
-            unset($this->stack);
+        if ($stack->top() instanceof ElseDirective) {
+            throw new PHPPreParserException('This is second else tag in a row', $this->getFileLine());
         }
-    }
 
-    /**
-     * Returns top element's index in stack.
-     *
-     * @return integer top element index
-     */
-    protected function getTopIndex()
-    {
-        return count($this->stack) - 1;
-    }
+        if ($stack->top() instanceof AbstractPHPPreConditionalDirective) {
+            $conditionalTag = $stack->pop();
+            $stack->push($this);
+            $this->condition = false;
 
-    /**
-     * Gets element from top of the stack.
-     *
-     * @return mixed top element
-     */
-    public function top()
-    {
-        if ($this->getTopIndex() == -1) {
-            return null;
+            $this->condition = PhpPreTask::defineGet($this->argument) !== null;
+            $stack->push($this);
+            
+        } else {
+            throw new PHPPreParserException('No opening tag found for elseifdef', $this->getFileLine());
         }
-        return $this->stack[$this->getTopIndex()];
-    }
-
-    /**
-     * Gets element and removes it from top of the stack.
-     *
-     * @return mixed top element
-     * @throws Exception when stack is empty
-     */
-    public function pop()
-    {
-        if ($this->getTopIndex() == -1) {
-            throw new Exception('Stack is empty!');
-        }
-        return array_pop($this->stack);
-    }
-
-    /**
-     * Adds element to top of the stack.
-     *
-     * @param $element AbstractPHPPreDirective element to add
-     */
-    public function push(&$element)
-    {
-        array_push($this->stack, $element);
     }
 }
