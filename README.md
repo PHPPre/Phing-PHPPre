@@ -15,6 +15,9 @@ Currently supports directives:
     * &#35;ifndef *DEFINITION*
     * &#35;else
     * &#35;endif
+    * &#35;elif *SIMPLE_EXPRESSION*
+    * &#35;elifdef *DEFINITION*
+    * &#35;elifndef *DEFINITION*
 * Message:
     * &#35;error
     * &#35;message
@@ -24,10 +27,6 @@ Work in progress:
 
 Future releases:
 
-* Control:
-    * &#35;elif *SIMPLE_EXPRESSION*
-    * &#35;elifdef *DEFINITION*
-    * &#35;elifndef *DEFINITION*
 * Definition:
     * &#35;define
     * &#35;undef
