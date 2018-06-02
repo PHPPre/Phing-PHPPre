@@ -30,6 +30,9 @@ require_once 'phing/tasks/ext/phppre/directives/PHPPreIfDefDirective.php';
 require_once 'phing/tasks/ext/phppre/directives/PHPPreIfNDefDirective.php';
 require_once 'phing/tasks/ext/phppre/directives/PHPPreEndIfDirective.php';
 require_once 'phing/tasks/ext/phppre/directives/PHPPreElseDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreElseIfDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreElseIfDefDirective.php';
+require_once 'phing/tasks/ext/phppre/directives/PHPPreElseIfNDefDirective.php';
 
 require_once 'phing/tasks/ext/phppre/directives/PHPPreMessageErrorDirective.php';
 require_once 'phing/tasks/ext/phppre/directives/PHPPreMessageInfoDirective.php';
@@ -91,6 +94,18 @@ class PHPPreDirectiveFactory
                 return $tag;
             case 'else':
                 $tag = new ElseDirective($argument, $line, $definitions);
+                $tag->validate();
+                return $tag;
+            case 'elif':
+                $tag = new ElseIfDirective($argument, $line, $definitions);
+                $tag->validate();
+                return $tag;
+            case 'elifdef':
+                $tag = new ElseIfDefDirective($argument, $line, $definitions);
+                $tag->validate();
+                return $tag;
+            case 'elifndef':
+                $tag = new ElseIfNDefDirective($argument, $line, $definitions);
                 $tag->validate();
                 return $tag;
             case 'error':
